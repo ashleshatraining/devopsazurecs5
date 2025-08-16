@@ -6,18 +6,18 @@ terraform {
     }
   }
   backend "azurerm" {
-    resource_group_name  = "Paritala"
-    storage_account_name = "casestudy3sa1"
-    container_name       = "container12"
+    resource_group_name  = "backendazurerg"
+    storage_account_name = "backendrg"
+    container_name       = "testbacknd"
     key                  = "terraform.tfstate"
   }  
 }
 provider "azurerm" {
   features {}
-  subscription_id = "de108057-2edc-44c6-9cdc-365886498d3e"
-  client_id       = "450e193b-0a68-445d-acaa-a9105d57060b"
-  tenant_id       = "7c733756-1a90-400f-863b-e0c6877412e8"
-  client_secret   = "var.secret"
+  subscription_id = "426b8104-3a89-42f0-a3f5-14b554b1b2bb"
+  client_id       = "bf5e8e4f-3aea-40f9-bba6-0978ac70f104"
+  tenant_id       = "09201aea-fd49-442b-9a0d-8de2389cefaf"
+  client_secret   = "WtL8Q~2F1jhXJug7.42TcMEJInkXHZqhYZTfEdoR"
 }
 resource "azurerm_resource_group" "rg" {
   name     = var.rgname
@@ -40,7 +40,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   default_node_pool {
     name       = "default"
     node_count = 1
-    vm_size    = "Standard_D2_v2"
+    vm_size    = "Standard_B2s"
   }
 
   identity {
