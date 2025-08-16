@@ -51,10 +51,10 @@ stages:
              provider: 'azurerm'
              command: 'init'
              workingDirectory: '$(System.DefaultWorkingDirectory)/TF-files'
-             backendServiceArm: 'serviceconn1'
-             backendAzureRmResourceGroupName: 'Paritala'
-             backendAzureRmStorageAccountName: 'casestudy3sa1'
-             backendAzureRmContainerName: 'container12'
+             backendServiceArm: 'AZResourceconn'
+             backendAzureRmResourceGroupName: 'backendazurerg'
+             backendAzureRmStorageAccountName: 'backendrg'
+             backendAzureRmContainerName: 'testbacknd'
              backendAzureRmKey: 'terraform.tfstate'
          
           
@@ -72,7 +72,7 @@ stages:
              provider: 'azurerm'
              command: 'apply'
              workingDirectory: '$(System.DefaultWorkingDirectory)/cs5terraform'
-             environmentServiceNameAzureRM: 'serviceconn1'
+             environmentServiceNameAzureRM: 'AZResourceconn'
         
   - stage: destroyInfra
     condition: eq('${{ parameters.actionToPerform}}', 'Destroy')            
@@ -88,10 +88,10 @@ stages:
             provider: 'azurerm'
             command: 'init'
             workingDirectory: '$(System.DefaultWorkingDirectory)/cs5terraform'
-            backendServiceArm: 'serviceconn1'
-            backendAzureRmResourceGroupName: 'Paritala'
-            backendAzureRmStorageAccountName: 'casestudy3sa1'
-            backendAzureRmContainerName: 'container12'
+            backendServiceArm: 'AZResourceconn'
+            backendAzureRmResourceGroupName: 'backendazurerg'
+            backendAzureRmStorageAccountName: 'backendrg'
+            backendAzureRmContainerName: 'testbacknd'
             backendAzureRmKey: 'terraform.tfstate'
 
         - task: TerraformTaskV4@4
@@ -99,5 +99,5 @@ stages:
             provider: 'azurerm'
             command: 'destroy'
             workingDirectory: '$(System.DefaultWorkingDirectory)/cs5terraform'
-            environmentServiceNameAzureRM: 'serviceconn1'
+            environmentServiceNameAzureRM: 'AZResourceconn'
 
