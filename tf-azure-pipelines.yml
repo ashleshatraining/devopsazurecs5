@@ -52,7 +52,7 @@ stages:
            inputs:
              provider: 'azurerm'
              command: 'init'
-             workingDirectory: '$(System.DefaultWorkingDirectory)/TF-files'
+             workingDirectory: '$(System.DefaultWorkingDirectory)/cs5terraform'
              backendServiceArm: 'AZResourceconn'
              backendAzureRmResourceGroupName: 'backendazurerg'
              backendAzureRmStorageAccountName: 'backendrg'
