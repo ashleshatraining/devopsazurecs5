@@ -1,0 +1,65 @@
+trigger:
+- none
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        steps: 
+         - task: Docker@2
+           inputs:
+             containerRegistry: 'serviceconn1'
+             repository: 'cs5registry'
+             command: 'buildAndPush'
+             Dockerfile: '**/Dockerfile'
+
+         - task: HelmInstaller@0
+           inputs:
+             helmVersion: '2.14.1'
+             installKubectl: true    
+
+         - task: HelmDeploy@0
+           inputs:
+             azureSubscriptionForACR: 'conn1'
+             azureResourceGroupForACR: 'rg5'
+             azureContainerRegistry: 'cs5registry'
+             command: 'package'
+             chartPath: 'emojivoto/emojivoto'     
+
+         - task: PublishBuildArtifacts@1
+           inputs:
+            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+            ArtifactName: 'drop'
+            publishLocation: 'Container'  
+
+  - stage: 
+    jobs:
+      - job: Deploy
+        steps: 
+         - task: DownloadBuildArtifacts@1
+           inputs:
+             buildType: 'current'
+             downloadType: 'single'
+             artifactName: 'drop'
+             downloadPath: '$(System.ArtifactsDirectory)'          
+
+         - task: HelmInstaller@0
+           inputs:
+             helmVersion: '2.14.1'
+             installKubectl: true
+
+         - task: HelmDeploy@0
+           inputs:
+             connectionType: 'Azure Resource Manager'
+             azureSubscription: 'Free Trial (d4317d6c-a13c-48d4-aae3-54eb3afa94b3)'
+             azureResourceGroup: 'rg5'
+             kubernetesCluster: 'aksclustercs5'
+             namespace: 'emojivoto'
+             command: 'upgrade'
+             chartType: 'FilePath'
+             chartPath: 'emojivoto/emoji'
+             releaseName: 'emojiapp'
+             overrideValues: 'image.tag=$(Build.BuildId)'

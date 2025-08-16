@@ -1,0 +1,103 @@
+trigger: none
+
+parameters:
+  - name: actionToPerform
+    displayName: "Deploy/Destroy"
+    type: string
+    default: Deploy
+    values: [Deploy , Destroy]
+
+stages:
+  - stage: build
+    pool: 
+     vmImage: windows-latest
+    jobs:
+      - job: build
+        steps:
+          - task: CopyFiles@2
+            inputs:
+              SourceFolder: 'cs5terraform'
+              Contents: '**'
+              TargetFolder: '$(Build.ArtifactStagingDirectory)'
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'drop'
+              publishLocation: 'Container'
+  - stage: deployInfra
+    condition: eq('${{ parameters.actionToPerform }}', 'Deploy')
+    
+    
+    pool: 
+     vmImage: windows-latest
+    jobs:
+      - job: deploy
+        steps: 
+         - task: DownloadBuildArtifacts@1
+           inputs:
+             buildType: 'current'
+             downloadType: 'single'
+             artifactName: 'drop'
+             downloadPath: '$(System.ArtifactsDirectory)'
+         
+         - task:  ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@1
+           displayName: InstallTerraform
+           inputs:
+            terraformVersion: '1.3.9'
+
+         - task: TerraformTaskV4@4
+           displayName: TFInit
+           inputs:
+             provider: 'azurerm'
+             command: 'init'
+             workingDirectory: '$(System.DefaultWorkingDirectory)/TF-files'
+             backendServiceArm: 'serviceconn1'
+             backendAzureRmResourceGroupName: 'Paritala'
+             backendAzureRmStorageAccountName: 'casestudy3sa1'
+             backendAzureRmContainerName: 'container12'
+             backendAzureRmKey: 'terraform.tfstate'
+         
+          
+         - task: TerraformTaskV4@4
+           displayName: TFPlan
+           inputs:
+             provider: 'azurerm'
+             command: 'plan'
+             workingDirectory: '$(System.DefaultWorkingDirectory)/cs5terraform'
+             commandOptions: '-input=true' 
+             environmentServiceNameAzureRM: 'serviceconn1'
+
+         - task: TerraformTaskV4@4
+           inputs:
+             provider: 'azurerm'
+             command: 'apply'
+             workingDirectory: '$(System.DefaultWorkingDirectory)/cs5terraform'
+             environmentServiceNameAzureRM: 'serviceconn1'
+        
+  - stage: destroyInfra
+    condition: eq('${{ parameters.actionToPerform}}', 'Destroy')            
+    jobs:
+      - job: 
+        steps: 
+        - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@1  
+          inputs:
+            terraformVersion: 'latest'
+
+        - task: TerraformTaskV4@4
+          inputs:
+            provider: 'azurerm'
+            command: 'init'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/cs5terraform'
+            backendServiceArm: 'serviceconn1'
+            backendAzureRmResourceGroupName: 'Paritala'
+            backendAzureRmStorageAccountName: 'casestudy3sa1'
+            backendAzureRmContainerName: 'container12'
+            backendAzureRmKey: 'terraform.tfstate'
+
+        - task: TerraformTaskV4@4
+          inputs:
+            provider: 'azurerm'
+            command: 'destroy'
+            workingDirectory: '$(System.DefaultWorkingDirectory)/cs5terraform'
+            environmentServiceNameAzureRM: 'serviceconn1'
+
