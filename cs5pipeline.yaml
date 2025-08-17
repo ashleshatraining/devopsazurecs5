@@ -11,8 +11,8 @@ stages:
         steps: 
          - task: Docker@2
            inputs:
-             containerRegistry: 'serviceconn1'
-             repository: 'cs5registry'
+             containerRegistry: 'serviceconncs5'
+             repository: 'cs5registrycs'
              command: 'buildAndPush'
              Dockerfile: '**/Dockerfile'
 
@@ -23,9 +23,9 @@ stages:
 
          - task: HelmDeploy@0
            inputs:
-             azureSubscriptionForACR: 'conn1'
-             azureResourceGroupForACR: 'rg5'
-             azureContainerRegistry: 'cs5registry'
+             azureSubscriptionForACR: 'AZResourceconn'
+             azureResourceGroupForACR: 'rg5cs'
+             azureContainerRegistry: 'cs5registrycs'
              command: 'package'
              chartPath: 'emojivoto/emojivoto'     
 
@@ -54,8 +54,8 @@ stages:
          - task: HelmDeploy@0
            inputs:
              connectionType: 'Azure Resource Manager'
-             azureSubscription: 'Free Trial (d4317d6c-a13c-48d4-aae3-54eb3afa94b3)'
-             azureResourceGroup: 'rg5'
+             azureSubscription: 'Free Trial (426b8104-3a89-42f0-a3f5-14b554b1b2bb)'
+             azureResourceGroup: 'devopscs5'
              kubernetesCluster: 'aksclustercs5'
              namespace: 'emojivoto'
              command: 'upgrade'
