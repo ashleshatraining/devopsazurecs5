@@ -1,4 +1,4 @@
-FROM datawire/emojivoto-svc-base:v11.1
+FROM buoyantio/emojivoto-svc-base:v12
 WORKDIR svc_name
 ARG svc_name
 
