@@ -6,10 +6,11 @@ terraform {
     }
   }
   backend "azurerm" {
-    resource_group_name  = "backendazurerg"
-    storage_account_name = "devopscs5"
-    container_name       = "azuredevopscs5"
+    resource_group_name  = "devopscs5"
+    storage_account_name = "cs5sc"
+    container_name       = "cs5container"
     key                  = "terraform.tfstate"
+
   }  
 }
 provider "azurerm" {
