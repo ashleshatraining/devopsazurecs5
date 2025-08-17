@@ -1,5 +1,5 @@
 FROM datawire/emojivoto-svc-base:v11.1
-
+WORKDIR svc_name
 ARG svc_name
 
 COPY $svc_name/target/ /usr/local/bin/
