@@ -54,7 +54,7 @@ stages:
          - task: HelmDeploy@0
            inputs:
              connectionType: 'Azure Resource Manager'
-             azureSubscription: 'Free Trial (426b8104-3a89-42f0-a3f5-14b554b1b2bb)'
+             azureSubscription: 'AZResourceconn'
              azureResourceGroup: 'devopscs5'
              kubernetesCluster: 'aksclustercs5'
              namespace: 'emojivoto'
