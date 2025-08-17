@@ -44,6 +44,15 @@ stages:
            displayName: InstallTerraform
            inputs:
             terraformVersion: '1.3.9'
+         - task: Bash@3
+           displayName: 'Clean Terraform Cache'
+           inputs:
+            targetType: 'inline'
+            script: |
+              echo "Removing .terraform and .terraform.lock.hcl..."
+              rm -rf .terraform
+              rm -f .terraform.lock.hcl
+
         
         
 
