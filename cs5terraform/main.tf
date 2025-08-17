@@ -7,8 +7,8 @@ terraform {
   }
   backend "azurerm" {
     resource_group_name  = "backendazurerg"
-    storage_account_name = "backendrg"
-    container_name       = "testbacknd"
+    storage_account_name = "devopscs5"
+    container_name       = "azuredevopscs5"
     key                  = "terraform.tfstate"
   }  
 }
