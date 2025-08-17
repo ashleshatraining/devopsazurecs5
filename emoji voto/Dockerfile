@@ -1,5 +1,5 @@
 FROM buoyantio/emojivoto-svc-base:v12
-WORKDIR svc_name
+
 ARG svc_name
 
 COPY $svc_name/target/ /usr/local/bin/
