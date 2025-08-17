@@ -54,9 +54,9 @@ stages:
              command: 'init'
              workingDirectory: '$(System.DefaultWorkingDirectory)/cs5terraform'
              backendServiceArm: 'AZResourceconn'
-             backendAzureRmResourceGroupName: 'backendazurerg'
-             backendAzureRmStorageAccountName: 'devopscs5'
-             backendAzureRmContainerName: 'azuredevopscs5'
+             backendAzureRmResourceGroupName: 'devopscs5'
+             backendAzureRmStorageAccountName: 'cs5sc'
+             backendAzureRmContainerName: 'cs5container'
              backendAzureRmKey: 'terraform.tfstate'
          
           
@@ -91,9 +91,9 @@ stages:
             command: 'init'
             workingDirectory: '$(System.DefaultWorkingDirectory)/cs5terraform'
             backendServiceArm: 'AZResourceconn'
-            backendAzureRmResourceGroupName: 'backendazurerg'
-            backendAzureRmStorageAccountName: 'devopscs5'
-            backendAzureRmContainerName: 'azuredevopscs5'
+            backendAzureRmResourceGroupName: 'devopscs5'
+            backendAzureRmStorageAccountName: 'cs5sc'
+            backendAzureRmContainerName: 'cs5container'
             backendAzureRmKey: 'terraform.tfstate'
 
         - task: TerraformTaskV4@4
